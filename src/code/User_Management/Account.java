@@ -47,9 +47,9 @@ class Account {
 		pst.setString(1, Username);
 		ResultSet rst=pst.executeQuery();
 		rst.next();
-		System.out.println(Password);
+		System.out.println(Cryptography.getPasswordHash(Password));
 		System.out.println(rst.getString("Login_Password"));
-	    if(Password.equals(rst.getString("Login_Password")))
+	    if((Cryptography.getPasswordHash(Password)).equals(rst.getString("Login_Password")))
 	    {
 		   return true;
 	    }
@@ -94,7 +94,7 @@ class Account {
 			PreparedStatement pst=con.prepareStatement(create_user_query);
 			pst.setInt(1,New_User_ID);
 			pst.setString(2, Username);
-			pst.setString(3, Password);
+			pst.setString(3, PasswordHash);
 			pst.setInt(4, AuthorizationLevel);
 			pst.execute();
             

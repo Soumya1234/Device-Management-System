@@ -167,8 +167,7 @@ public class Log_In implements Initializable {
 			}
 			if(Create_Admin_Password_Text.getText().equals(Create_Admin_Confirm_Pass_Text.getText()))
 			{
-				String PasswordHashCode=Cryptography.getPasswordHash(Create_Admin_Password_Text.getText());
-    			User user=new User(Username,PasswordHashCode);
+    			User user=new User(Username,Create_Admin_Password_Text.getText());
     			user.create(1);
     			Shared_Connection.closeSharedConnection();
     			Create_Admin_User_Name_Text.setText("");
