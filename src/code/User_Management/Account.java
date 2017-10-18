@@ -10,17 +10,20 @@ import java.sql.Statement;
 import code.Exceptions.UserCreationError;
 import code.General_Support.Shared_Connection;
 
+//This class manages all the User Account related functionality like Authentication, Creation of New Account
 class Account {
     private String Username;
     private String Password;
     private int AuthorizationLevel=3;
     
+    //Constructor for the Account class: initializes the Username and Password
     public Account(String username, String password)
     {
     	Username=username;
     	Password=password;
     }
-    
+ 
+    //This function verifies the existence of the Username from the User Database
     public boolean verifyUserID() throws SQLException
     {
     	Connection con=Shared_Connection.getSharedConnection();
@@ -35,7 +38,8 @@ class Account {
     	return false;
     }
     
-    public boolean verifyPassword() throws SQLException
+    //This function verifies the encrypted Password from the User Database
+    public boolean verifyPassword() throws SQLException, NoSuchAlgorithmException
     {
     	Connection con=Shared_Connection.getSharedConnection();
 		String query_authenticate="SELECT * FROM USER_DATA WHERE USERNAME=?";
@@ -43,6 +47,8 @@ class Account {
 		pst.setString(1, Username);
 		ResultSet rst=pst.executeQuery();
 		rst.next();
+		System.out.println(Password);
+		System.out.println(rst.getString("Login_Password"));
 	    if(Password.equals(rst.getString("Login_Password")))
 	    {
 		   return true;
@@ -50,29 +56,27 @@ class Account {
     	return false;
     }
     
+    //This function returns the AuthorizationLevel of the User from the User Database
     public int getAuthorizationLevel()
     {
     	//Code to obtain AuthorizationLevel
     	return AuthorizationLevel;
     }
-    
-    public void setAuthorizationLevel(int a)
-    {
-    	AuthorizationLevel=a;
-    }
-    
+   
+    //This function returns the Username associated with the User 
     public String getUsername() 
     {
     	return Username;
     }
- 
-    public void createAccount(int a) throws SQLException, UserCreationError, NoSuchAlgorithmException
+    
+    //This function creates a new Account in the User Database
+    public void createAccount(int a) throws SQLException, UserCreationError, NoSuchAlgorithmException, Exception
     {
-    	if(verifyUserID())
+    	if(verifyUserID()) //Checking if the given Username already exists in the user database
     	{
     		throw new UserCreationError("Username already exists");
     	}
-    	else
+    	else //Creates the user only if the username does not already exists in the User Database
     	{
     		AuthorizationLevel=a;
     		Connection con=Shared_Connection.getSharedConnection();
@@ -90,7 +94,7 @@ class Account {
 			PreparedStatement pst=con.prepareStatement(create_user_query);
 			pst.setInt(1,New_User_ID);
 			pst.setString(2, Username);
-			pst.setString(3, PasswordHash);
+			pst.setString(3, Password);
 			pst.setInt(4, AuthorizationLevel);
 			pst.execute();
             

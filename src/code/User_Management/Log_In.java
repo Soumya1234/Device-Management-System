@@ -61,7 +61,8 @@ public class Log_In implements Initializable {
 
     @FXML
     private Button btn_Save;
-     
+    
+    //Handles the Log In button press event
     @FXML
     void handleLogInButtonAction(ActionEvent event) {
     	try
@@ -107,7 +108,8 @@ public class Log_In implements Initializable {
     		Messages.ShowErrorMessage(e.toString(), "Error");
     	}
     }
-
+   
+    //Handles the Save Configuration Button event
     @FXML
     void handleSaveButtonAction(ActionEvent event) {
     	try
@@ -136,6 +138,8 @@ public class Log_In implements Initializable {
     private PasswordField Create_Admin_Confirm_Pass_Text;
     @FXML
     private Button btn_Save_Admin;
+    
+    //Handles the Save Admin Button event
     @FXML
     void handleSaveAdminButtonAction(ActionEvent event) 
     {
@@ -148,7 +152,7 @@ public class Log_In implements Initializable {
 	        {
 	        	throw new BlankFieldError("All fields are mandatory");
 	        }
-	    	Shared_Connection.setServerConfig(Server_IP, Server_Port);
+	    	Shared_Connection.setServerConfig(Server_IP, Server_Port); 
 	    	Shared_Connection.createConnection();
 	    	Connection con=Shared_Connection.getSharedConnection();
 	    	String query_authenticate="SELECT * FROM USER_DATA";
@@ -164,7 +168,8 @@ public class Log_In implements Initializable {
 			if(Create_Admin_Password_Text.getText().equals(Create_Admin_Confirm_Pass_Text.getText()))
 			{
 				String PasswordHashCode=Cryptography.getPasswordHash(Create_Admin_Password_Text.getText());
-    			//.createUser(Username, PasswordHashCode, 1);
+    			User user=new User(Username,PasswordHashCode);
+    			user.create(1);
     			Shared_Connection.closeSharedConnection();
     			Create_Admin_User_Name_Text.setText("");
     			Create_Admin_Password_Text.setText("");

@@ -1,48 +1,31 @@
-//This class contains the data about the user logged into the Application
+
 package code.User_Management;
 import java.sql.*;
 
 import code.General_Support.Shared_Connection;
 
+//This class contains the data about the user logged into the Application
 public class Active_User {
 	
-  private static User Active_User;
+  private static User active_user;
  
-  
-  /**
-   * Sets the User_ID of the Active User Logged in to the Application 
-   * @param ID
-   */
+  //Sets the user as Active User
   public static void setUser(User a)
   {
-	  Active_User=a;
+	  active_user=a;
   }
   
+  //Returns the username of the Active User
   public static String getUserName()
   {
-	  return Active_User.Username();
+	  return active_user.Username();
   }
-  /**
-   * Will be used for determining Permission Level for each Method in Business Logic
-   * @return Permission Level as integer
-   */
-  public static int getPermissionLevel()
-  {   /***
-	  try{
-		  Connection con=Shared_Connection.getSharedConnection();
-		  String query_permission_level="SELECT PERMISSION_LEVEL FROM USER_DATA WHERE USER_ID=?";
-		  PreparedStatement pst=con.prepareStatement(query_permission_level);
-		  //pst.setInt(1, Active_User_ID);
-		  ResultSet rst= pst.executeQuery();
-		  rst.next();
-		  Active_User_Permission_Level=rst.getInt("PERMISSION_LEVEL");
-	  }
-	  catch (SQLException e)
-	  {
-		  e.printStackTrace();
-	  }
-	  ***/
-	  return Active_User.AuthorizationLevel();
+ 
+  //Returns the Authorization Level of the Active user
+  //Used for granting necessary access to different features of the Application
+  public static int getAuthorizationLevel()
+  {   
+	  return active_user.AuthorizationLevel();
   }
   
  
