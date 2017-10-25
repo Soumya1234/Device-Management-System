@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import code.Exceptions.AuthenticationError;
 import code.Exceptions.UserCreationError;
 import code.General_Support.Shared_Connection;
+import code.Office_Management.Office;
 
 //The User class defines provides functionality for LogIn and LogOut.
 //This class represents a single user
@@ -13,7 +14,7 @@ import code.General_Support.Shared_Connection;
 //This class "has an" Account object as a private member which facilitates all the user Account related functionality  
 public class User {
    private Account a;
-   
+   private Office ofc;
    //Public constructor initializes the associated account with Username and Password
    public User(String Username, String Password)
    {
